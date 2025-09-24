@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client2 {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db2 {
+  provider = "mysql"
+  url      = "file:../db/dev.db"
+}
+
+
+model Artist {
+  id        Int      @id @default(autoincrement())
+  name      String
+  style     Style[]
+  instrument Instrument[]
+  albums    Album[]
+}
+
+model Album {
+  id        Int      @id @default(autoincrement())
+  title     String
+  releaseYear Int
+  artistId  Int
+  artist    Artist   @relation(fields: [artistId], references: [id])
+}
+
+model Instrument {
+  id        Int      @id @default(autoincrement())
+  name      String
+  instrument_type String
+  artistId  Int
+  artist    Artist[]
+}
+
+model Style {
+  id        Int      @id @default(autoincrement())
+  name      String
+  artistId  Int
+  artist    Artist[]
+}

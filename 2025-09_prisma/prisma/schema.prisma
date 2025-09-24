@@ -10,6 +10,44 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Question {
+  id           String     @id @default(cuid())
+  typeId       Int
+  type         Type       @relation(fields: [typeId], references: [id])
+  difficultyId Int
+  difficulty   Difficulty @relation(fields: [difficultyId], references: [id])
+  categoryId   Int
+  category     Category   @relation(fields: [categoryId], references: [id])
+  question     String
+  answers      Answer[]
+}
+
+model Answer {
+  id         String   @id @default(cuid())
+  text       String
+  correct    Boolean
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id])
+}
+
+model Category {
+  id        Int        @id @default(autoincrement())
+  name      String
+  questions Question[]
+}
+
+model Difficulty {
+  id        Int        @id @default(autoincrement())
+  name      String
+  questions Question[]
+}
+
+model Type {
+  id        Int        @id @default(autoincrement())
+  name      String
+  questions Question[]
 }
