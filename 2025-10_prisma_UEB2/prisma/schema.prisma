@@ -1,0 +1,49 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Zoo {
+  id        Int        @id @default(autoincrement())
+  name      String
+  location  String
+  Abteilungen Abteilung[]
+  Mitarbeiter  Mitarbeiter[]
+}
+
+model Abteilung {
+  id      Int      @id @default(autoincrement())
+  name    String
+  Tiere   Tier[]
+  zooId   Int
+  Zoo     Zoo      @relation(fields: [zooId], references: [id])
+  Mitarbeiter Mitarbeiter[]
+}
+
+model Tier {
+  id        Int      @id @default(autoincrement())
+  name      String
+  abteilungId Int
+  Abteilung Abteilung    @relation(fields: [abteilungId], references: [id])
+}
+
+model Mitarbeiter {
+  id        Int      @id @default(autoincrement())
+  name      String
+  position  String
+  zooId    Int
+  abteilungId Int
+  Zoo       Zoo      @relation(fields: [zooId], references: [id])
+  Abteilung Abteilung @relation(fields: [abteilungId], references: [id])
+}
