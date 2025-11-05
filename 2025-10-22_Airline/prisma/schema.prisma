@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model Airport{
+  id String @id @default(uuid())
+  name String
+  city String
+}
+
+
+
+
+
+/*
+
+
+model Aircraft {
+  id            Int      @id @default(autoincrement())
+  seats         Int
+  flights       Flight[]
+  airline       Airline  @relation(fields: [airlineId], references: [id])
+  airlineId     Int
+  model         String
+  hangarAirport Airport  @relation(fields: [airportId], references: [id])
+  airportId     Int
+}
+
+model Airport {
+  id              Int       @id @default(autoincrement())
+  name            String
+  city            String
+  departureFlights Flight[] @relation("DepartureAirport")
+  arrivalFlights   Flight[] @relation("ArrivalAirport")
+  hangarAircrafts Aircraft[]
+}
+
+model Passenger {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String   @unique
+  flights   Flight[] @relation("PassengerFlights")
+}
+
+model Airline {
+  id       Int       @id @default(autoincrement())
+  name     String
+  aircraft Aircraft[]
+  flights  Flight[]
+}
+
+model Flight {
+  id                  Int        @id @default(autoincrement())
+  departureAirport    Airport    @relation("DepartureAirport", fields: [departureAirportId], references: [id])
+  departureAirportId  Int
+  destinationAirport  Airport    @relation("ArrivalAirport", fields: [destinationAirportId], references: [id])
+  destinationAirportId Int
+  durationSeconds     Int
+  departureDateTime   DateTime
+  aircraft            Aircraft   @relation(fields: [aircraftId], references: [id])
+  aircraftId          Int
+  operatingAirline    Airline    @relation(fields: [airlineId], references: [id])
+  airlineId           Int
+  passengers          Passenger[] @relation("PassengerFlights")
+}
+
+
+*/
